@@ -1,0 +1,5 @@
+telephely_engedely:AAAAAAAAAAAAA
+utolso_adat_osszehasonlitas_idoszaka:1701
+adatallomany_sorszama:00
+output_directory:not_set
+
