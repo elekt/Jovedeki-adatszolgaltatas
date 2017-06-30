@@ -1,6 +1,8 @@
 # Jövedéki adatszolgáltatás generáló
 Ez a program a “A Nemzeti Adó- és Vámhivatal által kiadott 4006/2017. tájékoztatás a jövedéki engedélyes kereskedő által teljesítendő adatszolgáltatás műszaki követelményeiről” dokumentum (4006_2017.pdf -ként csatolva) alapján formailag helyes jövedéki adatszolgáltatás fájlokat generál, a csatolt táblázatok alapján (fejlec.csv, tetelek.csv)
 
+A táblátazokat ISO-8859-2 (Eastern Europe) kódolással kell megnyitni szerkesztéshez!
+
 A program futtatásához Python 2.7 szükséges,hogy telepítve legyen és a PATH változók közé fel legyen véve.
 
 ## Windows 
@@ -27,7 +29,7 @@ Futtatáshoz lépjünk a program könyvtárába majd: “python main.py”-t fut
 A program abban a mappában keresi a szükséges fájlokat ahonnan futtatva lett. Ezért kérem együtt mozgassa őket, illetve a fájlokat ne nevezze át.
 
 ### MAIN.PY
-A futtatandó állomány. A CONFIG.TXT, FEJLEC.CSV és TETELEK.CSV fájlok alapján generálja le az adatszolgáltatást.
+A futtatandó állomány. A CONFIG.TXT, FEJLEC.CSV és TETELEK.CSV fájlok alapján generálja le az adatszolgáltatást. A táblátazokat ISO-8859-2 (Eastern Europe) kódolással kell megnyitni szerkesztéshez!
 
 ### CONFIG.TXT
 Minta (ha elromolna ezzel felülírható):

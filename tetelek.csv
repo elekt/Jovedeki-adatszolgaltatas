@@ -1,10 +1,7 @@
 "Szállítólevél, EKO vagy egyéb a kitárolásról szóló
-Bizonylatszáma (20)";"Értékesített termék KN-kódja
-[1-8 számjegyig]";Értékesített termék megnevezése (50);"Értékesített termék mennyisége
+Bizonylatszáma (20)","Értékesített termék KN-kódja
+[1-8 számjegyig]",Értékesített termék megnevezése (50),"Értékesített termék mennyisége
 [(negatív elõjel opcionális) 12 egész és 2 tizedes, ponttal
-Elválasztva] (15)";Értékesített termék mennyiségi egysége;"Értékesített termék kiszerelésének típusa
-[4 egész és 3 tizedes, ponttal elválasztva]";"Alkoholtermék/sör alkoholfoka (%)
+Elválasztva] (15)",Értékesített termék mennyiségi egysége,"Értékesített termék kiszerelésének típusa
+[4 egész és 3 tizedes, ponttal elválasztva]","Alkoholtermék/sör alkoholfoka (%)
 [3 egész és 2 tizedes, ponttal elválasztva]"
-ASD123QQQKKK01234567;1234567;Dragon Slayer 50 inch rubber dildo;-12.215;KG;4.123;
-SAD123QQQKKK01234567;1234556;110 years old oak barrel whiskey;100;HL;100;110.23
-DSA123QQQKKK01234567;3333333;Puff 'em smokes;10;DB;50.1;0
