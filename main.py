@@ -143,9 +143,10 @@ def generate_header():
                 header += row[8]
                 header += char_pipe
                 # Forgalom típusa
-                if not row[4] in ['1', '2', '3', '4']:
-                    print("HIBA: lehetséges forgalom típusok: \n1 = Belföldre kiszállítás \n2 = Tagállamba kiszállítás \n3 = Exportra kiszállítás \n4 = Légiutas - ellátási tevékenységhez kiszállítás.")
-
+                if not row[9] in ['1', '2', '3', '4']:
+                    print("{} HIBA: lehetséges forgalom típusok: \n1 = Belföldre kiszállítás \n2 = Tagállamba kiszállítás \n3 = Exportra kiszállítás \n4 = Légiutas - ellátási tevékenységhez kiszállítás.".format(row[4]))
+                    exit(1)
+                    
                 header += row[9]
                 header += char_pipe
                 # Szállítólevél, EKO vagy egyéb a kitárolásról szóló bizonylat
@@ -197,9 +198,10 @@ def generate_data():
                 # Értékesített termék mennyiségi egysége
                 if not row[4] in ['DB', 'L', 'KG', 'M3']:
                     print("HIBA: lehetséges mennyiségi egységek: 'DB', 'L', 'KG', 'M3'")
-
-                data += char_pipe
+                    exit(1)
+                    
                 data += row[4]
+                data += char_pipe
 
                 # Értékesített termék kiszerelésének típusa
                 # [4 egész és 3 tizedes, ponttal elválasztva]
