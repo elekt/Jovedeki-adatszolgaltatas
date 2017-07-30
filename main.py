@@ -8,8 +8,8 @@ import os
 
 config = dict()
 
-char_pipe = str(unichr(124))
-char_new_line = str(unichr(10))
+char_pipe = chr(124)
+char_new_line = chr(10) + chr(13)
 
 reload(sys)
 sys.setdefaultencoding('ISO-8859-2')
@@ -211,7 +211,6 @@ def generate_data():
                 # Alkoholtermék/sör alkoholfoka (%)
                 # [3 egész és 2 tizedes, ponttal elválasztva]
                 data += row[6]
-                data += char_pipe
 
                 data += char_new_line
 
