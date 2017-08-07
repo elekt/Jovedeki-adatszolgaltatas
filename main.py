@@ -9,7 +9,7 @@ import os
 config = dict()
 
 char_pipe = chr(124)
-char_new_line = chr(10) + chr(13)
+char_new_line = "\r\n"
 
 reload(sys)
 sys.setdefaultencoding('ISO-8859-2')
@@ -19,7 +19,7 @@ def parse_config_file():
         config_lines = f.readlines()
 
     for line in config_lines:
-        splitted_line = line.split(':')
+        splitted_line = line.split('#')
         if len(splitted_line) == 2:
             config[splitted_line[0]] = splitted_line[1].rstrip('\n')
 
@@ -27,7 +27,7 @@ def parse_config_file():
 def overwrite_config_file():
     with open("config.txt", 'r+') as f:
         for (key, value) in config.iteritems():
-            f.write("{}:{}\n".format(key, value))
+            f.write("{}#{}\n".format(key, value))
 
 
 def generate_file_name():
