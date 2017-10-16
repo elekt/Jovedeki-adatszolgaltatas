@@ -103,7 +103,7 @@ def get_output_directory():
 
 
 def generate_header():
-    header = "VF" + char_pipe
+    header = ""
 
     with codecs.open('fejlec.csv', 'r', 'ISO-8859-2') as csvfile:
         row_num = 0
@@ -111,7 +111,8 @@ def generate_header():
         for row in header_reader:
             # the row contains the data. using the line_num of the reader is not safe, since inserting \n in the header
             # can change the starting number
-            if row_num == 1:
+            if row_num >= 1:
+                header += "VF" + char_pipe
                 # add version
                 header += row[0]
                 header += char_pipe
@@ -126,15 +127,22 @@ def generate_header():
                 header += row[3]
                 header += char_pipe
                 # Vevõ vagy címzett adószáma
+                if row[4] == '0':
+                    header += '00000000'
+                else:
+                    header += row[4]
                 header += char_pipe
-                header += row[4]
                 # Dohánygyártmány esetén a jövedéki kiskereskedõ mûködési
                 # engedélyszáma, nyilvántartásba vételi száma vagy dohány
                 # kiskereskedelmi engedélyszáma
-                header += row[5]
+                if row[9] == '1':
+                    header += row[5]
                 header += char_pipe
                 # Vevõ vagy címzett irányítószám
-                header += row[6]
+                if row[6] == '0':
+                    header += '0000'
+                else:
+                    header += row[4]
                 header += char_pipe
                 # Vevõ vagy címzett település
                 header += row[7]
@@ -224,6 +232,7 @@ def generate_data():
 
 
 parse_config_file()
+
 
 with codecs.open(os.path.join(get_output_directory(), generate_file_name()), "w", "ISO-8859-2") as f:
     f.write((generate_header() + generate_data()).encode('ISO-8859-2'))
