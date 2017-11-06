@@ -102,8 +102,9 @@ def get_output_directory():
                 return os.getcwd()
 
 
-def generate_header():
-    header = ""
+def generate_headers():
+    headers = ""
+    id_numbers = []
 
     with codecs.open('fejlec.csv', 'r', 'ISO-8859-2') as csvfile:
         row_num = 0
@@ -112,81 +113,95 @@ def generate_header():
             # the row contains the data. using the line_num of the reader is not safe, since inserting \n in the header
             # can change the starting number
             if row_num >= 1:
-                header += "VF" + char_pipe
+                headers += "VF" + char_pipe
                 # add version
-                header += row[0]
-                header += char_pipe
+                headers += row[0]
+                headers += char_pipe
 
                 # Jövedéki engedélyes adószáma
-                header += row[1]
-                header += char_pipe
+                headers += row[1]
+                headers += char_pipe
                 # Jövedéki engedélyes engedélyszáma
-                header += row[2]
-                header += char_pipe
+                headers += row[2]
+                headers += char_pipe
                 # Vevõ vagy címzett neve
-                header += row[3]
-                header += char_pipe
+                headers += row[3]
+                headers += char_pipe
                 # Vevõ vagy címzett adószáma
                 if row[4] == '0':
-                    header += '00000000'
+                    headers += '00000000'
                 else:
-                    header += row[4]
-                header += char_pipe
+                    headers += row[4]
+                headers += char_pipe
                 # Dohánygyártmány esetén a jövedéki kiskereskedõ mûködési
                 # engedélyszáma, nyilvántartásba vételi száma vagy dohány
                 # kiskereskedelmi engedélyszáma
                 if row[9] == '1':
-                    header += row[5]
-                header += char_pipe
+                    headers += row[5]
+                headers += char_pipe
                 # Vevõ vagy címzett irányítószám
                 if row[6] == '0':
-                    header += '0000'
+                    headers += '0000'
                 else:
-                    header += row[4]
-                header += char_pipe
+                    headers += row[4]
+                headers += char_pipe
                 # Vevõ vagy címzett település
-                header += row[7]
-                header += char_pipe
+                headers += row[7]
+                headers += char_pipe
                 # Vevõ vagy címzett utca és házszám
-                header += row[8]
-                header += char_pipe
+                headers += row[8]
+                headers += char_pipe
                 # Forgalom típusa
                 if not row[9] in ['1', '2', '3', '4']:
                     print("{} HIBA: lehetséges forgalom típusok: \n1 = Belföldre kiszállítás \n2 = Tagállamba kiszállítás \n3 = Exportra kiszállítás \n4 = Légiutas - ellátási tevékenységhez kiszállítás.".format(row[4]))
                     exit(1)
                     
-                header += row[9]
-                header += char_pipe
+                headers += row[9]
+                headers += char_pipe
                 # Szállítólevél, EKO vagy egyéb a kitárolásról szóló bizonylat
                 # száma
-                header += row[10]
-                header += char_pipe
+                headers += row[10]
+                id_numbers.append(row[10])
+                headers += char_pipe
                 # Szállítólevél, EKO vagy egyéb a kitárolásról szóló bizonylat kelte
                 # (ÉÉÉÉHHNN)
-                header += row[11]
-                header += char_pipe
+                headers += row[11]
+                headers += char_pipe
                 # Kiszállítás idõpontja (ÉÉÉÉHHNN)
-                header += row[12]
+                headers += row[12]
 
-                header += char_new_line
+                headers += char_new_line
 
             row_num += 1
-    return header.encode('iso-8859-2')
+    return headers.encode('iso-8859-2').splitlines(), id_numbers
 
 
 def generate_data():
+    (headers, id_numbers) = generate_headers()
+
+    # initialize temporary data storage, where they are separeatd by id (bizonylatszám)
+    data_id_storage = {}
+    for id in id_numbers:
+        data_id_storage[id] = ""
+
     with codecs.open('tetelek.csv', 'r', 'ISO-8859-2') as csvfile:
         row_num = 0
         data_reader = csv.reader(csvfile, delimiter=';', quotechar='"')
-        data = ""
         for row in data_reader:
             # the rows that contains the data. using the line_num of the reader is not safe, since inserting \n in the
             # data can change the starting number
             if row_num >= 1:
+                current_id = ""
+                data = ""
+
                 data += "VT" + char_pipe
 
-                # Szállítólevél, EKO vagy egyéb a kitárolásról szóló bizonylatszáma
+                # Szállít   ólevél, EKO vagy egyéb a kitárolásról szóló bizonylatszáma
                 data += row[0]
+                current_id = row[0]
+                if current_id not in id_numbers:
+                    print("Adatsor bizonylatszámához nem tartozik fejadat. program befejezésre kerül.")
+                    exit(1)
                 data += char_pipe
 
                 # Értékesített termék KN-kódja [1-8 számjegyig]
@@ -222,19 +237,28 @@ def generate_data():
 
                 data += char_new_line
 
+                data_id_storage[current_id] += data
+
             row_num += 1
 
         if row_num == 1:
             print("Egy tétel sem található a tetelek.csv fájl-ban.")
             exit(1)
 
-    return data.encode('ISO-8859-2')
+    final_data = ""
+
+    for i in range(0, len(headers)):
+        final_data += headers[i] + char_new_line
+        final_data += data_id_storage[id_numbers[i]]
+
+    return final_data.encode('ISO-8859-2')
 
 
 parse_config_file()
 
 
+data = (generate_data()).encode('ISO-8859-2')
 with codecs.open(os.path.join(get_output_directory(), generate_file_name()), "w", "ISO-8859-2") as f:
-    f.write((generate_header() + generate_data()).encode('ISO-8859-2'))
+    f.write(data)
 
 
