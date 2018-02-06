@@ -219,11 +219,11 @@ def generate_data():
                 data += char_pipe
 
                 # Értékesített termék mennyiségi egysége
-                if not row[4] in ['DB', 'L', 'KG', 'M3']:
+                if not row[4].upper() in ['DB', 'L', 'KG', 'M3']:
                     print("HIBA: lehetséges mennyiségi egységek: 'DB', 'L', 'KG', 'M3'")
                     exit(1)
                     
-                data += row[4]
+                data += row[4].upper()
                 data += char_pipe
 
                 # Értékesített termék kiszerelésének típusa
